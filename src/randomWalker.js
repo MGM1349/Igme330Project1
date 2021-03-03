@@ -11,15 +11,15 @@ export class RandomWalker{
         this.height = height;
     }
 
-    Draw(ctx){
-        let newPosition = this.CalculateNewPosition();
+    draw(ctx){
+        let newPosition = this.calculateNewPosition();
         this.prevPosition = this.position;
         console.log(this.prevPosition);
         this.position = newPosition;
         ctx.fillRect(this.position[0], this.position[1], this.width, this.height);
     }
 
-    CalculateNewPosition(){
+    calculateNewPosition(){
         let rand = Math.floor(Math.random() * 10) + 1;
         let newX = 0;
         let newY = 0;
@@ -52,5 +52,18 @@ export class RandomWalker{
 
         return [this.position[0] + newX, this.position[1] + newY];
 
+    }
+
+    hitPlayer(player){
+        let halfHeight = player.height / 2;
+        let halfWidth = player.width / 2;
+
+        if(player.x + halfWidth < this.position[0] || player.x - halfWidth > this.position[0] + this.width
+            || player.y + halfHeight < this.position[1] || player.y - halfHeight > this.position[1] + this.height){
+                return 1;
+        }
+        else{
+            return 0;
+        }
     }
 }
