@@ -35,7 +35,8 @@ function init(){
 function loop(){
     requestAnimationFrame(loop);
 
-    translation = utils.playerMovement();
+    playerDamage();
+
     draw();
 
 }
@@ -48,10 +49,29 @@ function draw(){
 	ctx.restore();
 
     player.draw(ctx)
-
+    
+    translation = utils.playerMovement();
     for(let i = 0; i < numWalk; i++){
         walkers[i].draw(ctx, translation);
     }
+}
+
+function playerDamage(){
+    let damage = 0;
+    for(let i = 0;i < numWalk; i++){
+        if(walkers[i].hitPlayer(player) == 1){
+            damage++;
+            walkers.splice(i, 1);
+            i--;
+            numWalk--;
+        }
+    }
+
+    player.takeDamage(damage);
+}
+
+function shoot(){
+    
 }
 
 export{init};

@@ -51,8 +51,8 @@ export class RandomWalker{
         let halfHeight = player.height / 2;
         let halfWidth = player.width / 2;
 
-        if(player.x + halfWidth < this.position[0] || player.x - halfWidth > this.position[0] + this.width
-            || player.y + halfHeight < this.position[1] || player.y - halfHeight > this.position[1] + this.height){
+        if(player.x + halfWidth > this.position[0] && player.x - halfWidth < this.position[0] + this.width
+            && player.y + halfHeight > this.position[1] && player.y - halfHeight < this.position[1] + this.height){
                 return 1;
         }
         else{
