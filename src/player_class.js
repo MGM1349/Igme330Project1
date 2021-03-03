@@ -5,26 +5,27 @@ export class Player{
         this.health = health;
         this.damage = damage;
         this.name = name;
-        width = 5;
-        height = 5;
-        alive = true;
+        this.width = 10;
+        this.height = 10;
+        this.alive = true;
     } 
 
     takeDamage(damage)    {
         this.health -= damage;
         if (this.health <= 0)
         {
-            alive = false;
+            this.alive = false;
         }
     }
 
     draw(ctx){
         ctx.save();        
         ctx.beginPath();
-        ctx.rect(x-width/2,y-height/2,5,5);
+        ctx.rect(this.x-this.width/2,this.y-this.height/2,this.width,this.height);
         ctx.closePath();
         ctx.fillStyle = "blue";
         ctx.fill();
         ctx.restore();
     }
 }
+
