@@ -1,7 +1,5 @@
-export class Player
-{
-    constructor(x, y, health=3, damage, name)
-    {
+export class Player{
+    constructor(x, y, health=3, damage, name)    {
         this.x = x;
         this.y = y;
         this.health = health;
@@ -12,8 +10,7 @@ export class Player
         alive = true;
     } 
 
-    takeDamage(damage)
-    {
+    takeDamage(damage)    {
         this.health -= damage;
         if (this.health <= 0)
         {
@@ -21,8 +18,7 @@ export class Player
         }
     }
 
-    draw(ctx)
-    {
+    draw(ctx){
         ctx.save();        
         ctx.beginPath();
         ctx.rect(x-width/2,y-height/2,5,5);
