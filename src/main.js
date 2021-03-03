@@ -52,7 +52,8 @@ function draw(){
     
     translation = utils.playerMovement();
     for(let i = 0; i < numWalk; i++){
-        walkers[i].calculateNewPosition(player, translation);
+        walkers[i].calculateNewPosition(player);
+        walkers[i].translatePos(translation);
         walkers[i].draw(ctx);
     }
 }

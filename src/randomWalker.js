@@ -50,8 +50,8 @@ export class RandomWalker{
         }
 
         this.prevPosition = this.position;
-        this.position[0] += newX + translation[0];
-        this.position[1] += newY + translation[1];
+        this.position[0] += newX;
+        this.position[1] += newY;
         //return [this.position[0] + newX, this.position[1] + newY];
 
     }
@@ -67,5 +67,10 @@ export class RandomWalker{
         else{
             return 0;
         }
+    }
+
+    translatePos(translation){
+        this.position[0] += translation[0];
+        this.position[1] += translation[1];
     }
 }
