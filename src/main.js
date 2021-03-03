@@ -52,7 +52,8 @@ function draw(){
     
     translation = utils.playerMovement();
     for(let i = 0; i < numWalk; i++){
-        walkers[i].draw(ctx, translation);
+        walkers[i].calculateNewPosition(player, translation);
+        walkers[i].draw(ctx);
     }
 }
 
@@ -71,7 +72,7 @@ function playerDamage(){
 }
 
 function shoot(){
-    
+
 }
 
 export{init};
