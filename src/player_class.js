@@ -1,14 +1,16 @@
 export class Player
 {
-    constructor(x, y, health, damage, name)
+    constructor(x, y, health=3, damage, name)
     {
         this.x = x;
         this.y = y;
         this.health = health;
         this.damage = damage;
         this.name = name;
+        width = 5;
+        height = 5;
         alive = true;
-    }
+    } 
 
     takeDamage(damage)
     {
@@ -23,7 +25,7 @@ export class Player
     {
         ctx.save();        
         ctx.beginPath();
-        ctx.rect(x,y,5,5);
+        ctx.rect(x-width/2,y-height/2,5,5);
         ctx.closePath();
         ctx.fillStyle = "blue";
         ctx.fill();
