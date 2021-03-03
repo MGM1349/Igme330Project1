@@ -1,0 +1,5 @@
+function checkCollisionWithWall(){
+
+}
+
+export{checkCollisionWithWall};
