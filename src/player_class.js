@@ -18,4 +18,15 @@ class Player
             alive = false;
         }
     }
+
+    draw(ctx)
+    {
+        ctx.save();        
+        ctx.beginPath();
+        ctx.rect(x,y,5,5);
+        ctx.closePath();
+        ctx.fillStyle = "white";
+        ctx.fill();
+        ctx.restore();
+    }
 }
