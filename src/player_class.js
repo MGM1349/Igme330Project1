@@ -25,7 +25,7 @@ class Player
         ctx.beginPath();
         ctx.rect(x,y,5,5);
         ctx.closePath();
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "blue";
         ctx.fill();
         ctx.restore();
     }
