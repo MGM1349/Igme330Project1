@@ -37,8 +37,8 @@ function playerMovement(){
     return translate;
 }
 
-function randomXY(){
-    
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export{checkCollisionWithWall, keysDown, keysUp, playerMovement};
+export{checkCollisionWithWall, keysDown, keysUp, playerMovement, getRandomInt};

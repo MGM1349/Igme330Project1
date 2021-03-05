@@ -1,3 +1,5 @@
+import * as utils from "./utils.js";
+
 export class RandomWalker{
     prevPosition = [0,0];
     position = [0,0];
@@ -30,7 +32,7 @@ export class RandomWalker{
 
         }
         else{
-            let rand = Math.floor(Math.random() * 8) + 1;
+            let rand = utils.getRandomInt(0,9);
             if(rand > 0 && rand <= 2){
                 newX = 0;
                 newY = 1;

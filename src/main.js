@@ -8,6 +8,11 @@ let walkers;
 let player;
 let numWalk;
 let translation = [0,0];
+let moved = false;
+let hasShot = false;
+let endedTurn = false;
+let mouseX = 0;
+let mouseY = 0;
 
 const canvasWidth = 800, canvasHeight = 600;
 
@@ -22,41 +27,86 @@ function init(){
     window.addEventListener("keydown", utils.keysDown);
     window.addEventListener("keyup", utils.keysUp);
 
+    ctx.fillStyle = "black";
+    ctx.fillRect(0,0,canvasWidth,canvasHeight);
+    
+    player = new player_class.Player(canvasWidth/2, canvasHeight/2, 3, 1, "Marc is dumb");
+    player.draw(ctx);
+
     numWalk = 20;
     walkers = [];    
     for(let i = 0;i < numWalk; i++){
         walkers[i] = new randomWalker.RandomWalker(i*50, i*50, 5, 5);
     }
+    walkerDraw();
 
-    player = new player_class.Player(canvasWidth/2, canvasHeight/2, 3, 1, "Marc is dumb");
+    document.querySelector("#move").onclick = function move(){moved = true;}
+    document.querySelector("#shoot").onclick = function shot(){hasShot = true;}
+    document.querySelector("#endTurn").onclick = function endTurn(){endedTurn = true;}
+    canvas.onclick = canvasClicked;
+
     loop();
+
 }
 
 function loop(){
     requestAnimationFrame(loop);
 
-    playerDamage();
+    if(endedTurn){
+        walkerDraw();
+        playerDamage();
+        endedTurn = false;
+        moved = false;
+    }
 
-    draw();
+    if(moved){
+        translateDraw();
+    }
+
+    if(hasShot){
+        shoot();
+        hasShot = false;
+    }
 
 }
 
-//handles all drawing to the canvas
-function draw(){
+function walkerDraw(){
+    for(let i = 0; i < numWalk; i++){
+        walkers[i].calculateNewPosition(player);
+        walkers[i].draw(ctx);
+    }
+}
+
+function translateDraw(){
+
     ctx.save();
 	ctx.fillStyle = "black";
 	ctx.fillRect(0,0,canvasWidth,canvasHeight);
+    player.draw(ctx);
 	ctx.restore();
+    
+    ctx.strokeStyle = "white";
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(400,300,60,0,Math.PI * 2, false);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
 
-    player.draw(ctx)
     
     translation = utils.playerMovement();
     for(let i = 0; i < numWalk; i++){
-        walkers[i].calculateNewPosition(player);
         walkers[i].translatePos(translation);
         walkers[i].draw(ctx);
     }
 }
+
+function canvasClicked(e){
+    let rect = e.target.getBoundingClientRect();
+    mouseX = e.clientX - rect.x;
+    mouseY = e.clientY - rect.y;
+}
+
 
 function playerDamage(){
     let damage = 0;
