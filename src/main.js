@@ -15,8 +15,7 @@ let mouseX = 0;
 let mouseY = 0;
 
 const canvasWidth = 800, canvasHeight = 600;
-
-
+let playersTurn = true;
 
 function init(){
     canvas = document.querySelector('canvas');
@@ -40,8 +39,7 @@ function init(){
     }
     walkerDraw();
 
-    document.querySelector("#move").onclick = function move(){moved = true;}
-    document.querySelector("#shoot").onclick = function shot(){hasShot = true;}
+    
     document.querySelector("#endTurn").onclick = function endTurn(){endedTurn = true;}
     canvas.onclick = canvasClicked;
 
@@ -50,23 +48,20 @@ function init(){
 }
 
 function loop(){
-    requestAnimationFrame(loop);
+    requestAnimationFrame(loop);    
 
-    if(endedTurn){
+    if(playersTurn){
+        translateDraw();
+        if (endedTurn){
+            playersTurn = false;
+        }
+    }
+    else{
         walkerDraw();
         playerDamage();
         endedTurn = false;
         moved = false;
-    }
-
-    if(moved){
-        translateDraw();
-    }
-
-    if(hasShot){
-        shoot();
-        hasShot = false;
-    }
+    }    
 
 }
 
