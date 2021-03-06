@@ -12,6 +12,8 @@ let endedTurn = false;
 let playersTurn = true;
 let mouseX = 0;
 let mouseY = 0;
+let circleX = 400;
+let circleY = 300;
 
 const canvasWidth = 800, canvasHeight = 600;
 let timer = 0;
@@ -81,16 +83,27 @@ function translateDraw(){
     player.draw(ctx);
 	ctx.restore();
     
+
+    translation = utils.playerMovement();
+    let distanceAway = utils.distanceAway(circleX + translation[0], circleY + translation[1], player.x, player.y);
+    
+    if(distanceAway >= 60){
+        translation[0] = 0;
+        translation[1] = 0;
+    }
+   
+    
+    circleX += translation[0];
+    circleY += translation[1];
+
     ctx.strokeStyle = "white";
     ctx.save();
     ctx.beginPath();
-    ctx.arc(400,300,60,0,Math.PI * 2, false);
+    ctx.arc(circleX,circleY,60,0,Math.PI * 2, false);
     ctx.closePath();
     ctx.stroke();
     ctx.restore();
 
-    
-    translation = utils.playerMovement();
     for(let i = 0; i < numWalk; i++){
         walkers[i].translatePos(translation);
         walkers[i].draw(ctx);
