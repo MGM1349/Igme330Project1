@@ -41,4 +41,12 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export{checkCollisionWithWall, keysDown, keysUp, playerMovement, getRandomInt};
+function drawBackground(ctx){
+    ctx.save();
+	ctx.fillStyle = "black";
+	ctx.fillRect(0,0,canvasWidth,canvasHeight);
+    player.draw(ctx);
+	ctx.restore();
+}
+
+export{checkCollisionWithWall, keysDown, keysUp, playerMovement, getRandomInt, drawBackground};
