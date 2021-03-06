@@ -1,7 +1,8 @@
 import * as utils from "./utils.js";
 
 export class RandomWalker{
-    prevPosition = [0,0];
+    prevX = 0;
+    prevY = 0;
     position = [0,0];
     width = 0;
     height = 0;
@@ -27,29 +28,34 @@ export class RandomWalker{
             let rotation = Math.atan2(player.y - this.position[1], player.x - this.position[0]);
             newX += Math.cos(rotation) * .5;
             newY += Math.sin(rotation) * .5;
-
         }
         else{
-            let rand = utils.getRandomInt(0,9);
-            if(rand > 0 && rand <= 2){
+            let rand = utils.getRandomInt(0,11);
+            if (rand > 0 && rand <= 6)
+            {
+                newX = this.prevX;
+                newY = this.prevY;
+            }
+            else if(rand > 6 && rand <= 7){
                 newX = 0;
                 newY = 1;
             }
-            else if(rand > 2 && rand <= 4){
+            else if(rand > 7 && rand <= 8){
                 newX = 0;
                 newY = -1;
             }
-            else if(rand > 4 && rand <= 6){
+            else if(rand > 8 && rand <= 9){
                 newX = -1;
                 newY = 0;
             }
-            else if(rand > 6 && rand <= 8){
+            else if(rand > 9 && rand <= 10){
                 newX = 1;
                 newY = 0;
             } 
         }
 
-        this.prevPosition = this.position;
+        this.prevX = newX;
+        this.prevY = newY;
         this.position[0] += newX;
         this.position[1] += newY;
         //return [this.position[0] + newX, this.position[1] + newY];
