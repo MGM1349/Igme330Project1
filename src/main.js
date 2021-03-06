@@ -35,7 +35,7 @@ function init(){
     player = new player_class.Player(canvasWidth/2, canvasHeight/2, 3, 1, "Marc is dumb");
     player.draw(ctx);
 
-    numWalk = 20;
+    numWalk = 100;
     walkers = [];    
     for(let i = 0;i < numWalk; i++){
         walkers[i] = new randomWalker.RandomWalker(utils.getRandomInt(-500, 1300), utils.getRandomInt(-300, 900), 5, 5);
