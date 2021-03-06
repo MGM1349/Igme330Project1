@@ -22,9 +22,7 @@ export class RandomWalker{
         let newX = 0;
         let newY = 0;
 
-        let distanceX = this.position[0] - player.x;
-        let distanceY = this.position[1] - player.y;
-        let distanceAway = Math.pow((Math.pow(distanceX,2) + Math.pow(distanceY,2)), .5);
+        let distanceAway = utils.distanceAway(this.position[0], this.position[1], player.x, player.y);
         if(distanceAway < 80){
             let rotation = Math.atan2(player.y - this.position[1], player.x - this.position[0]);
             newX += Math.cos(rotation) * .5;

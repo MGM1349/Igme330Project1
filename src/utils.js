@@ -49,4 +49,13 @@ function drawBackground(ctx){
 	ctx.restore();
 }
 
-export{checkCollisionWithWall, keysDown, keysUp, playerMovement, getRandomInt, drawBackground};
+//checks the distance one object (x1, y1) 
+//and another object (x2, y2)
+function distanceAway(x1,y1,x2,y2){
+    let distanceX = x1 - x2;
+    let distanceY = y1 - y2;
+    let distanceAway = Math.pow((Math.pow(distanceX,2) + Math.pow(distanceY,2)), .5);
+    return distanceAway;
+}
+
+export{checkCollisionWithWall, keysDown, keysUp, playerMovement, getRandomInt, drawBackground, distanceAway};

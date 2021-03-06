@@ -84,6 +84,14 @@ function translateDraw(){
     
 
     translation = utils.playerMovement();
+    let distanceAway = utils.distanceAway(circleX + translation[0], circleY + translation[1], player.x, player.y);
+    
+    if(distanceAway >= 60){
+        translation[0] = 0;
+        translation[1] = 0;
+    }
+   
+    
     circleX += translation[0];
     circleY += translation[1];
 
@@ -95,7 +103,6 @@ function translateDraw(){
     ctx.stroke();
     ctx.restore();
 
-    
     for(let i = 0; i < numWalk; i++){
         walkers[i].translatePos(translation);
         walkers[i].draw(ctx);
