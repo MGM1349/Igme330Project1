@@ -8,14 +8,13 @@ let walkers;
 let player;
 let numWalk;
 let translation = [0,0];
-let moved = false;
-let hasShot = false;
 let endedTurn = false;
+let playersTurn = true;
 let mouseX = 0;
 let mouseY = 0;
 
 const canvasWidth = 800, canvasHeight = 600;
-let playersTurn = true;
+let timer = 0;
 
 function init(){
     canvas = document.querySelector('canvas');
@@ -25,6 +24,8 @@ function init(){
 
     window.addEventListener("keydown", utils.keysDown);
     window.addEventListener("keyup", utils.keysUp);
+
+    canvas.onclick = canvasClicked;
 
     ctx.fillStyle = "black";
     ctx.fillRect(0,0,canvasWidth,canvasHeight);
@@ -38,31 +39,31 @@ function init(){
         walkers[i] = new randomWalker.RandomWalker(i*50, i*50, 5, 5);
     }
     walkerDraw();
-
     
-    document.querySelector("#endTurn").onclick = function endTurn(){endedTurn = true;}
-    canvas.onclick = canvasClicked;
+    document.querySelector("#endTurn").onclick = function endTurn(){endedTurn = true;}    
 
     loop();
-
 }
 
 function loop(){
     requestAnimationFrame(loop);    
 
     if(playersTurn){
-        translateDraw();
+        translateDraw();        
         if (endedTurn){
             playersTurn = false;
+            timer = 0;
         }
     }
     else{
         walkerDraw();
         playerDamage();
         endedTurn = false;
-        moved = false;
+        timer++;
+        if (timer >= 600){
+            playersTurn = true;
+        }
     }    
-
 }
 
 function walkerDraw(){
@@ -100,6 +101,8 @@ function canvasClicked(e){
     let rect = e.target.getBoundingClientRect();
     mouseX = e.clientX - rect.x;
     mouseY = e.clientY - rect.y;
+    //console.log(mouseX + ", "  + mouseY);
+    shoot();
 }
 
 
@@ -118,7 +121,18 @@ function playerDamage(){
 }
 
 function shoot(){
-
+    if (playersTurn == true){
+        for (let i = 0; i < numWalk; i++){
+            if (mouseX > walkers[i].position[0] - 3 && mouseX < walkers[i].position[0] + 8
+            && mouseY > walkers[i].position[1] - 3 && mouseY < walkers[i].position[1] + 8){
+                walkers.splice(i, 1);
+                numWalk--;            
+                break;
+                //console.log("it worked");
+            }
+        }
+        endedTurn = true;   
+    }         
 }
 
 export{init};
