@@ -38,7 +38,7 @@ function init(){
     numWalk = 20;
     walkers = [];    
     for(let i = 0;i < numWalk; i++){
-        walkers[i] = new randomWalker.RandomWalker(i*50, i*50, 5, 5);
+        walkers[i] = new randomWalker.RandomWalker(utils.getRandomInt(-500, 1300), utils.getRandomInt(-300, 900), 5, 5);
     }
     walkerDraw();
     
@@ -58,10 +58,13 @@ function loop(){
         }
     }
     else{
+        circleX = 400;
+        circleY = 300;
         walkerDraw();
         playerDamage();
         endedTurn = false;
         timer++;
+        //need to make this time based instead of frames
         if (timer >= 600){
             playersTurn = true;
         }
@@ -69,6 +72,8 @@ function loop(){
 }
 
 function walkerDraw(){
+    utils.drawBackground(ctx);
+    player.draw(ctx);
     for(let i = 0; i < numWalk; i++){
         walkers[i].calculateNewPosition(player);
         walkers[i].draw(ctx);

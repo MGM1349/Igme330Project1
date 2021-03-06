@@ -44,8 +44,7 @@ function getRandomInt(min, max) {
 function drawBackground(ctx){
     ctx.save();
 	ctx.fillStyle = "black";
-	ctx.fillRect(0,0,canvasWidth,canvasHeight);
-    player.draw(ctx);
+	ctx.fillRect(0,0,800,600);
 	ctx.restore();
 }
 
