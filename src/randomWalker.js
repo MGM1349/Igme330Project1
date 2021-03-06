@@ -1,8 +1,8 @@
 import * as utils from "./utils.js";
 
 export class RandomWalker{
-    prevX = 0;
-    prevY = 0;
+    prevX = utils.getRandomInt(-1,2);
+    prevY = utils.getRandomInt(-1,2);
     position = [0,0];
     width = 0;
     height = 0;
