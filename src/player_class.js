@@ -1,5 +1,5 @@
 export class Player{
-    constructor(x, y, health=3, damage, name)    {
+    constructor(x, y, health=3, damage, name){
         this.x = x;
         this.y = y;
         this.health = health;

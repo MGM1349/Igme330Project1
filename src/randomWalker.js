@@ -38,18 +38,18 @@ export class RandomWalker{
             }
             else if(rand > 6 && rand <= 7){
                 newX = 0;
-                newY = 1;
+                newY = 2.5;
             }
             else if(rand > 7 && rand <= 8){
                 newX = 0;
-                newY = -1;
+                newY = -2.5;
             }
             else if(rand > 8 && rand <= 9){
-                newX = -1;
+                newX = -2.5;
                 newY = 0;
             }
             else if(rand > 9 && rand <= 10){
-                newX = 1;
+                newX = 2.5;
                 newY = 0;
             } 
         }

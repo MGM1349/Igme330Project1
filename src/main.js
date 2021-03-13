@@ -2,6 +2,7 @@ import * as randomWalker from "./randomWalker.js";
 import * as wall from "./wall.js";
 import * as utils from "./utils.js";
 import * as player_class from "./player_class.js";
+import * as bullet_class from "./butllet_class.js";
 
 let canvas, ctx;
 let walkers;
@@ -14,6 +15,7 @@ let mouseX = 0;
 let mouseY = 0;
 let circleX = 400;
 let circleY = 300;
+let bullets = [];
 
 const canvasWidth = 800, canvasHeight = 600;
 let timer = 0;
@@ -51,8 +53,8 @@ function loop(){
     requestAnimationFrame(loop);    
 
     if(playersTurn){
-        translateDraw();        
-        if (endedTurn){
+        translateDraw();                     
+        if (endedTurn && bullets.length == 0){
             playersTurn = false;
             timer = 0;
         }
@@ -87,32 +89,38 @@ function translateDraw(){
 	ctx.fillRect(0,0,canvasWidth,canvasHeight);
     player.draw(ctx);
 	ctx.restore();
+
+    //checks to see if a bullet has been fired
+    if (bullets.length > 0){
+        shoot();
+    } 
+
+    else{
+        translation = utils.playerMovement();
+        let distanceAway = utils.distanceAway(circleX + translation[0], circleY + translation[1], player.x, player.y);
+        
+        if(distanceAway >= 60){
+            translation[0] = 0;
+            translation[1] = 0;
+        }
     
 
-    translation = utils.playerMovement();
-    let distanceAway = utils.distanceAway(circleX + translation[0], circleY + translation[1], player.x, player.y);
-    
-    if(distanceAway >= 60){
-        translation[0] = 0;
-        translation[1] = 0;
+        circleX += translation[0];
+        circleY += translation[1];
+
+        ctx.strokeStyle = "white";
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(circleX,circleY,60,0,Math.PI * 2, false);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.restore();        
     }
-   
-    
-    circleX += translation[0];
-    circleY += translation[1];
-
-    ctx.strokeStyle = "white";
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(circleX,circleY,60,0,Math.PI * 2, false);
-    ctx.closePath();
-    ctx.stroke();
-    ctx.restore();
-
     for(let i = 0; i < numWalk; i++){
         walkers[i].translatePos(translation);
         walkers[i].draw(ctx);
     }
+    
 }
 
 function canvasClicked(e){
@@ -120,7 +128,9 @@ function canvasClicked(e){
     mouseX = e.clientX - rect.x;
     mouseY = e.clientY - rect.y;
     //console.log(mouseX + ", "  + mouseY);
-    shoot();
+    bullets[0] = new bullet_class.Bullet(player);
+    bullets[0].shoot(mouseX, mouseY);
+    //shoot();
 }
 
 
@@ -138,19 +148,32 @@ function playerDamage(){
     player.takeDamage(damage);
 }
 
+//loops through checking collisions between the players bullet, enemies and walls
 function shoot(){
-    if (playersTurn == true){
-        for (let i = 0; i < numWalk; i++){
-            if (mouseX > walkers[i].position[0] - 3 && mouseX < walkers[i].position[0] + 8
-            && mouseY > walkers[i].position[1] - 3 && mouseY < walkers[i].position[1] + 8){
-                walkers.splice(i, 1);
-                numWalk--;            
-                break;
-                //console.log("it worked");
-            }
+    //loops through all bullets
+    for(let i = 0; i < bullets.length; i++)
+    {
+        //draws bullet
+        bullets[0].draw(ctx); 
+        //loops through all walkers, checking for collisions and removing them from array as necessary      
+        for (let h = 0; h < numWalk; h++){
+            if (bullets[i].x > walkers[h].position[0] - 3 && bullets[i].x < walkers[h].position[0] + 8
+            && bullets[i].y > walkers[h].position[1] - 3 && bullets[i].y < walkers[h].position[1] + 8){
+                walkers.splice(h, 1);
+                numWalk--;
+                bullets.splice(i,1);            
+                break;                
+            }    
+            //checks to see if bullet is on screen, if not it is deleted
+            if (bullets[i].x < 0 || bullets[i].x > 800 || bullets[i].y < 0 || bullets[i].y > 600){
+                bullets.splice(i,1);     
+                break;            
+            }        
         }
-        endedTurn = true;   
-    }         
+        //will eventually check collisions between bullets and walls
+        utils.checkCollisionWithWall(bullets[i]);
+    }
+    endedTurn = true;       
 }
 
 export{init};
