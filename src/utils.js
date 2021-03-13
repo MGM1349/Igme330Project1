@@ -1,7 +1,29 @@
 let keys = {};
 
-function checkCollisionWithWall(){
+//input the object you wanna check with the walls. The walls is the array
+//the num of walls is the amount of walls inside that array.
+function checkCollisionWithWall(object, walls, numWalls){
 
+    //get the halfWidht and halfHeight.
+    let halfHeight = object.height / 2;
+    let halfWidth = object.width / 2;
+
+    //loops through the walls and checks to see
+    //if the object is colliding with the walls
+    //if so it will return true or false if not colliding.
+    for(let i = 0; i < numWalls; i++){
+        if(object.x + halfWidth > walls[i].x && object.x - halfWidth < walls[i].x + walls[i].width
+            && object.y + halfHeight > walls[i].y && object.y - halfHeight < walls[i].y + walls[i].height){
+                return true;
+        }
+    }
+
+    return false;
+}
+
+//clear the keys
+function clearKeys(){
+    keys = {};
 }
 
 function keysDown(e){
@@ -57,4 +79,4 @@ function distanceAway(x1,y1,x2,y2){
     return distanceAway;
 }
 
-export{checkCollisionWithWall, keysDown, keysUp, playerMovement, getRandomInt, drawBackground, distanceAway};
+export{checkCollisionWithWall, keysDown, keysUp, playerMovement, getRandomInt, drawBackground, distanceAway, clearKeys};

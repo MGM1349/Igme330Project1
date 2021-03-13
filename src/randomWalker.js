@@ -3,29 +3,30 @@ import * as utils from "./utils.js";
 export class RandomWalker{
     prevX = utils.getRandomInt(-1,2);
     prevY = utils.getRandomInt(-1,2);
-    position = [0,0];
+    x = 0;
+    y = 0;
     width = 0;
     height = 0;
 
     constructor(x,y,width,height){
-        this.position[0] = x;
-        this.position[1] = y;
+        this.x = x;
+        this.y = y;
         this.width = width;
         this.height = height;
     }
 
     draw(ctx){
         ctx.fillStyle = "green";
-        ctx.fillRect(this.position[0], this.position[1], this.width, this.height);
+        ctx.fillRect(this.x-this.width/2,this.y-this.height/2,this.width,this.height);
     }
 
-    calculateNewPosition(player, translation){
+    calculateNewPosition(player){
         let newX = 0;
         let newY = 0;
 
-        let distanceAway = utils.distanceAway(this.position[0], this.position[1], player.x, player.y);
+        let distanceAway = utils.distanceAway(this.x, this.y, player.x, player.y);
         if(distanceAway < 80){
-            let rotation = Math.atan2(player.y - this.position[1], player.x - this.position[0]);
+            let rotation = Math.atan2(player.y - this.y, player.x - this.x);
             newX += Math.cos(rotation) * .5;
             newY += Math.sin(rotation) * .5;
         }
@@ -56,9 +57,8 @@ export class RandomWalker{
 
         this.prevX = newX;
         this.prevY = newY;
-        this.position[0] += newX;
-        this.position[1] += newY;
-        //return [this.position[0] + newX, this.position[1] + newY];
+        this.x += newX;
+        this.y += newY;
 
     }
 
@@ -66,8 +66,8 @@ export class RandomWalker{
         let halfHeight = player.height / 2;
         let halfWidth = player.width / 2;
 
-        if(player.x + halfWidth > this.position[0] && player.x - halfWidth < this.position[0] + this.width
-            && player.y + halfHeight > this.position[1] && player.y - halfHeight < this.position[1] + this.height){
+        if(player.x + halfWidth > this.x && player.x - halfWidth < this.x + (this.width / 2) 
+            && player.y + halfHeight > this.y && player.y - halfHeight < this.y + (this.height / 2)){
                 return 1;
         }
         else{
@@ -76,7 +76,7 @@ export class RandomWalker{
     }
 
     translatePos(translation){
-        this.position[0] += translation[0];
-        this.position[1] += translation[1];
+        this.x += translation[0];
+        this.y += translation[1];
     }
 }

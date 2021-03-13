@@ -12,8 +12,13 @@ export class Wall{
 
     }
 
-    Draw(ctx){
+    draw(ctx){
         ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+
+    translatePos(translation){
+        this.x += translation[0];
+        this.y += translation[1];
     }
 
 }

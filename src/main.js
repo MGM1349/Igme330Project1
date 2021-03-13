@@ -16,6 +16,8 @@ let mouseY = 0;
 let circleX = 400;
 let circleY = 300;
 let bullets = [];
+let walls = [];
+let numWalls;
 
 const canvasWidth = 800, canvasHeight = 600;
 let timer = 0;
@@ -34,11 +36,18 @@ function init(){
     ctx.fillStyle = "black";
     ctx.fillRect(0,0,canvasWidth,canvasHeight);
     
-    player = new player_class.Player(canvasWidth/2, canvasHeight/2, 3, 1, "Marc is dumb");
+    player = new player_class.Player(canvasWidth/2, canvasHeight/2, 3, 1, "Marc", 10, 10);
     player.draw(ctx);
 
     numWalk = 100;
-    walkers = [];    
+    walkers = [];
+
+    numWalls = 4;
+    walls[0] = new wall.Wall(300, 200, 200, 20);
+    walls[1] = new wall.Wall(300, 400, 220, 20);
+    walls[2] = new wall.Wall(300, 200, 20, 200);
+    walls[3] = new wall.Wall(500, 200, 20, 200);
+
     for(let i = 0;i < numWalk; i++){
         walkers[i] = new randomWalker.RandomWalker(utils.getRandomInt(-500, 1300), utils.getRandomInt(-300, 900), 5, 5);
     }
@@ -80,6 +89,8 @@ function walkerDraw(){
         walkers[i].calculateNewPosition(player);
         walkers[i].draw(ctx);
     }
+
+    drawWalls();
 }
 
 function translateDraw(){
@@ -94,16 +105,30 @@ function translateDraw(){
     if (bullets.length > 0){
         shoot();
     } 
-
+    
     else{
+        
+        //create collision and check if the player is colliding with any walls
+        let collision = false;
+        collision = utils.checkCollisionWithWall(player, walls, numWalls);
+
+        //get translation if the player pressed any keys
+        //then check the distance away from the center of the move circle the player is.
         translation = utils.playerMovement();
         let distanceAway = utils.distanceAway(circleX + translation[0], circleY + translation[1], player.x, player.y);
-        
+
+        //if they move outside the move radius stop
+        //the player movement
         if(distanceAway >= 60){
             translation[0] = 0;
             translation[1] = 0;
         }
-    
+        //if collision stop the movement in the same direction
+        else if(collision){
+            translation[0] *= -1;
+            translation[1] *= -1;
+            utils.clearKeys();
+        }
 
         circleX += translation[0];
         circleY += translation[1];
@@ -121,16 +146,23 @@ function translateDraw(){
         walkers[i].draw(ctx);
     }
     
+    drawWalls();
+
+}
+
+function drawWalls(){
+    for(let i = 0; i < numWalls; i++){
+        walls[i].translatePos(translation);
+        walls[i].draw(ctx);
+    }
 }
 
 function canvasClicked(e){
     let rect = e.target.getBoundingClientRect();
     mouseX = e.clientX - rect.x;
     mouseY = e.clientY - rect.y;
-    //console.log(mouseX + ", "  + mouseY);
     bullets[0] = new bullet_class.Bullet(player);
     bullets[0].shoot(mouseX, mouseY);
-    //shoot();
 }
 
 
@@ -150,6 +182,9 @@ function playerDamage(){
 
 //loops through checking collisions between the players bullet, enemies and walls
 function shoot(){
+    translation = [0,0];
+    let collision;
+
     //loops through all bullets
     for(let i = 0; i < bullets.length; i++)
     {
@@ -157,8 +192,8 @@ function shoot(){
         bullets[0].draw(ctx); 
         //loops through all walkers, checking for collisions and removing them from array as necessary      
         for (let h = 0; h < numWalk; h++){
-            if (bullets[i].x > walkers[h].position[0] - 3 && bullets[i].x < walkers[h].position[0] + 8
-            && bullets[i].y > walkers[h].position[1] - 3 && bullets[i].y < walkers[h].position[1] + 8){
+            if (bullets[i].x > walkers[h].x - 3 && bullets[i].x < walkers[h].x + 8
+            && bullets[i].y > walkers[h].y - 3 && bullets[i].y < walkers[h].y + 8){
                 walkers.splice(h, 1);
                 numWalk--;
                 bullets.splice(i,1);            
@@ -167,13 +202,21 @@ function shoot(){
             //checks to see if bullet is on screen, if not it is deleted
             if (bullets[i].x < 0 || bullets[i].x > 800 || bullets[i].y < 0 || bullets[i].y > 600){
                 bullets.splice(i,1);     
-                break;            
-            }        
+                break;
+            }
+            
         }
-        //will eventually check collisions between bullets and walls
-        utils.checkCollisionWithWall(bullets[i]);
+
+        //check if the bullet is colliding with any walls.
+        collision= utils.checkCollisionWithWall(bullets[i], walls, numWalls);
+        if(collision){
+            bullets.splice(i,1);
+        }
+
+
     }
     endedTurn = true;       
 }
+
 
 export{init};
