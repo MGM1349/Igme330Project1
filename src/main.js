@@ -42,16 +42,30 @@ function init(){
     numWalk = 100;
     walkers = [];
 
-    numWalls = 4;
-    walls[0] = new wall.Wall(300, 200, 200, 20);
-    walls[1] = new wall.Wall(300, 400, 220, 20);
-    walls[2] = new wall.Wall(300, 200, 20, 200);
-    walls[3] = new wall.Wall(500, 200, 20, 200);
+    numWalls = utils.getRandomInt(50,100);
 
+    //creates random wall placements, does not allow them to be placed on top of player
+    for (let i = 0; i < numWalls; i++)
+    {
+        walls[i] = new wall.Wall();    
+        if (utils.checkCollisionWithWall(player, walls, walls.length)){
+            walls.splice(i, 1);
+            i--;
+        }
+    }    
+
+    //creates random walkers, does not allow them to be placed on top of walls or players
     for(let i = 0;i < numWalk; i++){
         walkers[i] = new randomWalker.RandomWalker(utils.getRandomInt(-500, 1300), utils.getRandomInt(-300, 900), 5, 5);
-    }
-    walkerDraw();
+        if (utils.checkCollisionWithWall(walkers[i], walls, numWalls)){
+            walkers.splice(i, 1);
+            i--;
+        }
+        if (utils.checkCollisionWithWall(player, walkers, walkers.length)){
+            walkers.splice(i, 1);
+            i--;
+        }
+    }    
     
     document.querySelector("#endTurn").onclick = function endTurn(){endedTurn = true;}    
 
@@ -86,7 +100,12 @@ function walkerDraw(){
     utils.drawBackground(ctx);
     player.draw(ctx);
     for(let i = 0; i < numWalk; i++){
-        walkers[i].calculateNewPosition(player);
+        if(!utils.checkCollisionWithWall(walkers[i], walls, numWalls)){
+            walkers[i].calculateNewPosition(player);            
+        }     
+        else{
+            walkers[i].collideWithWall();
+        }   
         walkers[i].draw(ctx);
     }
 
@@ -192,28 +211,29 @@ function shoot(){
         bullets[0].draw(ctx); 
         //loops through all walkers, checking for collisions and removing them from array as necessary      
         for (let h = 0; h < numWalk; h++){
-            if (bullets[i].x > walkers[h].x - 3 && bullets[i].x < walkers[h].x + 8
-            && bullets[i].y > walkers[h].y - 3 && bullets[i].y < walkers[h].y + 8){
+            if (bullets[i].x > walkers[h].x - 3 && bullets[i].x <= walkers[h].x + 8
+            && bullets[i].y > walkers[h].y - 3 && bullets[i].y <= walkers[h].y + 8){
                 walkers.splice(h, 1);
                 numWalk--;
-                bullets.splice(i,1);            
+                bullets.splice(i,1);       
                 break;                
             }    
             //checks to see if bullet is on screen, if not it is deleted
             if (bullets[i].x < 0 || bullets[i].x > 800 || bullets[i].y < 0 || bullets[i].y > 600){
-                bullets.splice(i,1);     
+                bullets.splice(i,1);   
                 break;
             }
             
         }
 
         //check if the bullet is colliding with any walls.
-        collision= utils.checkCollisionWithWall(bullets[i], walls, numWalls);
-        if(collision){
-            bullets.splice(i,1);
+        if (bullets.length > 0){
+            collision= utils.checkCollisionWithWall(bullets[i], walls, numWalls);
+            if(collision){
+                bullets.splice(i,1);
+                break;
+            }
         }
-
-
     }
     endedTurn = true;       
 }

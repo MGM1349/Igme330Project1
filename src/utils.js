@@ -13,7 +13,7 @@ function checkCollisionWithWall(object, walls, numWalls){
     //if so it will return true or false if not colliding.
     for(let i = 0; i < numWalls; i++){
         if(object.x + halfWidth > walls[i].x && object.x - halfWidth < walls[i].x + walls[i].width
-            && object.y + halfHeight > walls[i].y && object.y - halfHeight < walls[i].y + walls[i].height){
+            && object.y + halfHeight > walls[i].y && object.y - halfHeight < walls[i].y + walls[i].height){                
                 return true;
         }
     }
