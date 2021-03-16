@@ -1,0 +1,23 @@
+canvas{
+    width:47%;
+    height: 47%;
+    margin: 1vw;
+    display: flex;
+}
+
+#content{
+    display: flex;
+    flex-direction:row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 2vw;
+}
+
+#gameInfo{
+    display: flex;
+    flex-wrap: wrap;
+    width: 47%;
+    height: 47%;
+    margin: 1vw;
+    font-size: 30px;
+}

@@ -42,12 +42,18 @@ function init(){
     numWalk = 100;
     walkers = [];
 
-    numWalls = utils.getRandomInt(50,100);
+    walls[0] = new wall.Wall(-575,-375,1950,15);
+    walls[1] = new wall.Wall(-575,-375,15,1350);
+    walls[2] = new wall.Wall(-575,975,1965,15);
+    walls[3] = new wall.Wall(1375,-375,15,1350);
+    numWalls = utils.getRandomInt(50,100) + 4;
+
+
 
     //creates random wall placements, does not allow them to be placed on top of player
-    for (let i = 0; i < numWalls; i++)
+    for (let i = 4; i < numWalls; i++)
     {
-        walls[i] = new wall.Wall();    
+        walls[i] = new wall.Wall(0,0,0,0);    
         if (utils.checkCollisionWithWall(player, walls, walls.length)){
             walls.splice(i, 1);
             i--;
@@ -138,16 +144,16 @@ function translateDraw(){
 
         //if they move outside the move radius stop
         //the player movement
-        if(distanceAway >= 60){
-            translation[0] = 0;
-            translation[1] = 0;
-        }
-        //if collision stop the movement in the same direction
-        else if(collision){
-            translation[0] *= -1;
-            translation[1] *= -1;
-            utils.clearKeys();
-        }
+        // if(distanceAway >= 60){
+        //     translation[0] = 0;
+        //     translation[1] = 0;
+        // }
+        // //if collision stop the movement in the same direction
+        // else if(collision){
+        //     translation[0] *= -1;
+        //     translation[1] *= -1;
+        //     utils.clearKeys();
+        // }
 
         circleX += translation[0];
         circleY += translation[1];

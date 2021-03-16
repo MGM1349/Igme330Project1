@@ -6,17 +6,25 @@ export class Wall{
     width = 0;
     height = 0;
 
-    constructor(){
-        this.x = utils.getRandomInt(-500, 1300);
-        this.y = utils.getRandomInt(-300, 900);
-        if(utils.getRandomInt(0,1) == 1){
-            //utils.getRandomInt(-500, 1300), utils.getRandomInt(-300, 900), utils.getRandomInt(10, 30), utils.getRandomInt(10, 30)
-            this.width = utils.getRandomInt(50,200);
-            this.height = 15;
+    constructor(x,y,width,height){
+        if(x == 0 && y == 0 && width == 0 && height == 0){
+            this.x = utils.getRandomInt(-500, 1300);
+            this.y = utils.getRandomInt(-300, 900);
+            if(utils.getRandomInt(0,1) == 1){
+                //utils.getRandomInt(-500, 1300), utils.getRandomInt(-300, 900), utils.getRandomInt(10, 30), utils.getRandomInt(10, 30)
+                this.width = utils.getRandomInt(50,200);
+                this.height = 15;
+            }
+            else{
+                this.width = 15;
+                this.height = utils.getRandomInt(50,200);
+            }
         }
         else{
-            this.width = 15;
-            this.height = utils.getRandomInt(50,200);
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
         }
     }
 

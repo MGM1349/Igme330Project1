@@ -3,8 +3,29 @@
 	<title>Project 1</title>
 </head>
 <body>
-	<canvas width="800" height="600"></canvas>
     <script type="module" src="src/loader.js"></script>
+	<link href="styles/styles.css" type="text/css" rel="stylesheet" />
+
+<div id= "content">
+	<canvas width="800" height="600"></canvas>
+	<div id="gameInfo">
+		<h1>Game Info</h1>
+		<section>
+			Welcome to Walker Blaster. In this game you will controller the blue colored square and are
+			tasked with killing all the random walker enemies that are colored in green. There are walls all around
+			you which are colored in white. This is a turn based game where you can only move inside a predetermined 
+			area which is indicated by the white circle around you whenever it is your turn. You will move around the map
+			shooting any green enemies you see along the way. There are many walkers in your path, are you up for the challenge?
+			<div id= "controls">
+				<h2>Controls</h2>
+				<section>
+					WASD: moves the plyaer
+					Left Click: shoots the gun
+				</section>
+			</div>
+		</section>
+	</div>
+</div>
 
 	<div>
 		<button id="endTurn">End Turn</button>
