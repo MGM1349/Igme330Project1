@@ -280,6 +280,7 @@ function shoot(){
             && bullets[i].y > walkers[h].y - 3 && bullets[i].y <= walkers[h].y + 8){
                 walkers.splice(h, 1);
                 numWalk--;
+                score++;
                 bullets.splice(i,1);       
                 break;                
             }    
