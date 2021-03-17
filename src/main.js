@@ -116,6 +116,16 @@ function loop(){
         ctx.fillText(`Your score: ${score}`, 220, 300)
         ctx.restore();
     } 
+    //winning screen
+    else if (walkers.length <= 0){
+        utils.drawBackground(ctx);
+        ctx.save();
+        ctx.font = "60px Arial"; 
+        ctx.fillStyle = "Green";       
+        ctx.fillText("You Win!", 230, 200);
+        ctx.fillText(`Your score: ${score}`, 220, 300)
+        ctx.restore();
+    } 
     //during players turn it allows for the player to move and shoot once
     else if(playersTurn){
         translateDraw();     
