@@ -17,6 +17,32 @@
 		<div id="FourCategories">
 			<h2>Four Categories</h2>
 			<section>
+                <ol>
+                    <li>
+                        Overall Theme/Impact:
+                    </li>
+                        <p>
+                            afsadfafsdfaf
+                        </p>
+                    <li>
+                        User Experience:
+                    </li>
+                        <p>
+
+                        </p>
+                    <li>
+                        Media:
+                    </li>
+                        <p>
+
+                        </p>
+                    <li>
+                        Code:
+                    </li>
+                        <p>
+
+                        </p>
+                </ol>
 			</section>
 		</div>
         <div id= "Features">
@@ -24,10 +50,51 @@
             <section>
                 What went right:<br>
                 <ol>
-                    <li>We wanted to create a turn based game which only allowed
-                        the player to move while their turn 
+                    <li>
+                        We wanted to create a turn based game which only allowed
+                        the player during their turn. We created this by having the player's 
+                        turn end when they shot a bullet or they clicked end turn button.
+                        Also we had to create a time function that would count the duration
+                        of the random walker's turn in seconds. This allowed for distinct
+                        turn cycles between the player and enemies.
                     </li>
-                    <li></li>
+                    <li>
+                        We wanted to game world to be bigger than the canvas. We did this by
+                        having the player stay in the center of the screen and everything around
+                        them move instead. This allowed for a feel that the player was still moving
+                        even though they were not. Lastly, this allowed us to extend beyond the 
+                        canvas and create move objects outside this zone that the player could still 
+                        interact with.
+                    </li>
+                </ol>
+                What went wrong:
+                <ol>
+                    <li>
+                        The early developmental process for this project did not start off on a great footing.
+                        We did not know exactly what we wanted to do for this project and as a group we were not
+                        always on the right page about what the game should be. After we had to rethink the game
+                        we had similar ideas and finally construction of the game could move forward. 
+                    </li>
+                    <li>
+                        We had some issues with the collisions with everything after we tried to create a one function
+                        method for collision with the walls. To do this we had to redo how the walkers were being drawn
+                        so they also fit the confinds of this method. This created errors with collision with the player
+                        when checking this on the enemies turn. 
+                    </li>
+                </ol>
+                Features we wanted to add:
+                <ol>
+                    <li>
+                        We wanted to create a way to collect powerups on the map that let you upgrade you gun
+                        for a calculated amount of shots. We wanted to have certain powerups such as shooting 3
+                        bullets in a cone or being able to shoot multiple times in a turn. These would have allowed
+                        to add more interactivity to the game for players as they picked up powerups.
+                    </li>
+                    <li>
+                        We also wanted to create phylotaxis whenever an enemy died. They would start out at the origin of
+                        where the bullet hit the enemy. This would have added some color and created the game a bit more 
+                        interesting.
+                    </li>
                 </ol>
             </section>
         </div>
