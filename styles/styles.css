@@ -1,6 +1,12 @@
+h2{
+    font-size: 35px;
+}
 h3{
     font-size: 25px;
     margin:auto;
+}
+p, ol, section{
+    font-size: 30px;
 }
 
 header{
@@ -92,4 +98,12 @@ footer {
     background-color:cadetblue;
     border: 10px solid black;
     border-top: 10px solid cadetblue;    
+}
+
+#Documentation{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 70%;
+    margin-left: auto;
+    margin-right: auto;
 }
