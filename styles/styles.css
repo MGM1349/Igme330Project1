@@ -21,6 +21,8 @@ main{
     border: 10px solid black;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: auto;
+    margin-top: auto;
 }
 
 button{
@@ -41,6 +43,21 @@ button:hover{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+    background-color: #1c1c1c;
+    color: white;
+}
+
+#input{
+    text-align: center;
+}
+
+.sliders{
+    font-size: 20px;
+}
+
+.slider{
+    width: 90%;
+    
 }
 
 #info{

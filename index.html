@@ -24,34 +24,60 @@
 				<button id="endTurn">End Turn</button>				
 			</section>	
 			<section id="gameControls">
-				<h2>Input Changes</h2>
-				Player Health: <input type="range" id="healthSlider" min="1" max="10" value="5" step="1">
-				<span id="healthLabel">???</span>
-				Number of Enemies: <input type="range" id="enemySlider" min="10" max="200" value="50" step="1">
-				<span id="enemyLabel">???</span>
-				Number of Walls: <input type="range" id="wallSlider" min="10" max="100" value="50" step="1">
-				<span id="wallLabel">???</span>
-				Player Range: <input type="range" id="rangeSlider" min="10" max="250" value="50" step="1">
-				<span id="rangeLabel">???</span>
+				<h2 id="input">Input Changes</h2>
+				<div class="sliders">
+					Player Health:<br> <input type="range" class="slider" id="healthSlider" min="1" max="10" value="5" step="1">
+					<span id="healthLabel">???</span>
+				</div>
+				<div class="sliders">
+					Number of Enemies:<br> <input type="range" class="slider" id="enemySlider" min="10" max="200" value="50" step="1">
+					<span id="enemyLabel">???</span>
+				</div>
+				<div class="sliders">
+					Number of Walls:<br> <input type="range" class="slider" id="wallSlider" min="10" max="100" value="50" step="1">
+					<span id="wallLabel">???</span>
+				</div>
+				<div class="sliders">
+					Player Range:<br> <input type="range" class="slider" id="rangeSlider" min="10" max="250" value="50" step="1">
+					<span id="rangeLabel">???</span>
+				</div>				
 				<button id="reset">Apply/Reset</button>
 			</section>		
 		</div>		
-		<div id="gameInfo">
-			<h1>Game Info</h1>
+		<div id="gameInfo">			
 			<section>
-				Welcome to Walker Blaster. In this game you will control the blue colored square and are
-				tasked with killing all the green colored random walkers. There are walls all around
-				you which are colored in white. This is a turn based game where you can only move inside a predetermined 
-				area which is indicated by the white circle around you whenever it is your turn. You will move around the map
-				shooting any green enemies you see along the way. There are many walkers in your path, are you up for the challenge?
-				<div id= "controls">
-					<h2>Controls</h2>
-					<p>
-						WASD: moves the plyaer<br>
-						Left Click: shoots the gun
-					</p>
-				</div>
-			</section>
+				<h2>Game Info</h2>
+				<P>
+					This is a turn based game. During the player's turn they may move around the screen within the bounding circle. 
+					If they see an enemy, they should try to shoot it by left clicking the mouse on the canvas in the direction of that enemy. 
+					The player's turn will end once a bullet is fired and that bullet comes in contact with something or the player presses the "End Turn" button. 
+					(only 1 shot per round, make it count!) During the enemies turn the random walkers will move around the screen. 
+					If they get close enough to the player they will attack. (make sure you think about your placement) Once the timer 
+					at the bottom right hits 0 the players turn will begin again. Once you have less than 10 enemies remaining, during the 
+					player's turn you may move freely.
+				</P>
+				<ul>
+					<li>Player: Blue square</li>
+					<li>Player Health: Red rectangle</li>
+					<li>Walls: white rectangles</li>
+					<li>Enemies: green squares</li>
+					<li>Bounding circle: white ring</li>
+
+				</ul>
+			</section>	
+			<section id="controls">
+				<h2>Controls</h2>
+				<ul>
+					<li>WASD: moves the plyaer</li>
+					<li>Left Click: shoots in direction of mouse</li>					
+				</ul>
+			</section>	
+			<section>
+				<h2>User Input</h2>
+				<p>
+					The player may change som,e variables by changing the slider positions within the "Input Changes" window and pressing the "Apply/Reset" button.
+				</p>
+			</section>			
 		</div>
 	</div>
 </main>
