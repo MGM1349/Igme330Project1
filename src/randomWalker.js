@@ -7,7 +7,7 @@ export class RandomWalker{
     y = 0;
     width = 0;
     height = 0;
-
+    
     constructor(x,y,width,height){
         this.x = x;
         this.y = y;
@@ -15,6 +15,7 @@ export class RandomWalker{
         this.height = height;
     }
 
+    //draws the walkers in green in the canvas
     draw(ctx){
         ctx.save();
         ctx.fillStyle = "green";
@@ -22,16 +23,26 @@ export class RandomWalker{
         ctx.restore();
     }
 
+    //calculates the x and y position of the walkers
+    //Also checks to see if they are close to the player and will
+    //hunt the player instead of moving randomly.
     calculateNewPosition(player){
         let newX = 0;
         let newY = 0;
 
+        //checks to see the distance away from the plyaer
+        //and if the distance away is within a range,
+        //then we calculate the new x and y in the direction of the player.
         let distanceAway = utils.distanceAway(this.x, this.y, player.x, player.y);
         if(distanceAway < 80){
             let rotation = Math.atan2(player.y - this.y, player.x - this.x);
             newX += Math.cos(rotation) * .5;
             newY += Math.sin(rotation) * .5;
         }
+        
+        //calculates the position of the random walkers
+        //they have a better change to move in direction they have were moving
+        //from before.
         else{
             let rand = utils.getRandomInt(0,11);
             if (rand > 0 && rand <= 6)
@@ -57,6 +68,7 @@ export class RandomWalker{
             } 
         }
 
+        //update the position
         this.prevX = newX;
         this.prevY = newY;
         this.x += newX;
@@ -64,11 +76,15 @@ export class RandomWalker{
 
     }
 
+    //is called when it collides with a wall.
+    //this will make sure
     collideWithWall(){
         this.x -= this.prevX;
         this.y -= this.prevY;
     }
 
+    //checks to see if the enemy collided with the player
+    //if so it will return the damage to the player
     hitPlayer(player){
         let halfHeight = player.height / 2;
         let halfWidth = player.width / 2;
@@ -82,6 +98,7 @@ export class RandomWalker{
         }
     }
 
+    //translates the position based on where the player moves to
     translatePos(translation){
         this.x += translation[0];
         this.y += translation[1];
