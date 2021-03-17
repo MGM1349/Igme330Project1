@@ -13,14 +13,31 @@ let endedTurn = false;
 let playersTurn = true;
 let mouseX = 0;
 let mouseY = 0;
-let circleX = 400;
-let circleY = 300;
+let circleX;
+let circleY;
 let bullets = [];
-let walls = [];
+let walls;
 let numWalls;
+let score = 0;
+let moveRadius;
+let timer = 0;
+
+let turn;
+let time;
+let countdown;
+let endTurnButton;
+let resetButton;
+
+let healthSlider;
+let healthLabel;
+let enemySlider;
+let enemyLabel;
+let wallSlider;
+let wallLabel;
+let rangeSlider;
+let rangeLabel;
 
 const canvasWidth = 800, canvasHeight = 600;
-let timer = 0;
 
 function init(){
     canvas = document.querySelector('canvas');
@@ -32,76 +49,108 @@ function init(){
     window.addEventListener("keyup", utils.keysUp);
 
     canvas.onclick = canvasClicked;
-
-    ctx.fillStyle = "black";
-    ctx.fillRect(0,0,canvasWidth,canvasHeight);
     
     player = new player_class.Player(canvasWidth/2, canvasHeight/2, 3, 1, "Marc", 10, 10);
-    player.draw(ctx);
 
-    numWalk = 100;
-    walkers = [];
-
-    walls[0] = new wall.Wall(-575,-375,1950,15);
-    walls[1] = new wall.Wall(-575,-375,15,1350);
-    walls[2] = new wall.Wall(-575,975,1965,15);
-    walls[3] = new wall.Wall(1375,-375,15,1350);
-    numWalls = utils.getRandomInt(50,100) + 4;
-
-
-
-    //creates random wall placements, does not allow them to be placed on top of player
-    for (let i = 4; i < numWalls; i++)
-    {
-        walls[i] = new wall.Wall(0,0,0,0);    
-        if (utils.checkCollisionWithWall(player, walls, walls.length)){
-            walls.splice(i, 1);
-            i--;
-        }
-    }    
-
-    //creates random walkers, does not allow them to be placed on top of walls or players
-    for(let i = 0;i < numWalk; i++){
-        walkers[i] = new randomWalker.RandomWalker(utils.getRandomInt(-500, 1300), utils.getRandomInt(-300, 900), 5, 5);
-        if (utils.checkCollisionWithWall(walkers[i], walls, numWalls)){
-            walkers.splice(i, 1);
-            i--;
-        }
-        if (utils.checkCollisionWithWall(player, walkers, walkers.length)){
-            walkers.splice(i, 1);
-            i--;
-        }
-    }    
+    //sets up all range sliders and lebels
+    healthSlider = document.querySelector("#healthSlider");
+    healthLabel = document.querySelector("#healthLabel");
     
-    document.querySelector("#endTurn").onclick = function endTurn(){endedTurn = true;}    
+    healthSlider.oninput = e => {
+        healthLabel.innerHTML = Math.round(e.target.value);
+    };
+        
+    
+    enemySlider = document.querySelector("#enemySlider");
+    enemyLabel = document.querySelector("#enemyLabel");
+
+    enemySlider.oninput = e => {
+        enemyLabel.innerHTML = enemySlider.value;
+    };
+
+    wallSlider = document.querySelector("#wallSlider");
+    wallLabel = document.querySelector("#wallLabel");
+
+    wallSlider.oninput = e => {
+        wallLabel.innerHTML = wallSlider.value;
+    }
+
+    rangeSlider = document.querySelector("#rangeSlider");
+    rangeLabel = document.querySelector("#rangeLabel");
+
+    rangeSlider.oninput = e => {
+        rangeLabel.innerHTML = rangeSlider.value;
+    }
+    
+    //looks for button clicked
+    endTurnButton = document.querySelector("#endTurn");   
+    endTurnButton.onclick = function endTurn(){endedTurn = true;}
+    resetButton = document.querySelector("#reset");
+    resetButton.onclick = function() {reset()};
+    //query selectors for ingame info
+    turn = document.querySelector("#turn");
+    time = document.querySelector("#timer");
+    countdown = document.querySelector("#countdown");
+    countdown.innerHTML = "";
+    time.innerHTML = "";
+
+    reset();    
 
     loop();
 }
 
+//continually loops
 function loop(){
     requestAnimationFrame(loop);    
 
-    if(playersTurn){
-        translateDraw();                     
+    //game over screen
+    if (player.health <= 0){
+        utils.drawBackground(ctx);
+        ctx.save();
+        ctx.font = "60px Arial"; 
+        ctx.fillStyle = "red";       
+        ctx.fillText("Game Over", 230, 200);
+        ctx.fillText(`Your score: ${score}`, 220, 300)
+        ctx.restore();
+    } 
+    //during players turn it allows for the player to move and shoot once
+    else if(playersTurn){
+        translateDraw();     
+        utils.drawEnemiesLeft(ctx, walkers.length);                     
         if (endedTurn && bullets.length == 0){
             playersTurn = false;
             timer = 0;
+            turn.innerHTML = "Enemy Turn";
+            time.innerHTML = "Timer: "; 
+            countdown.innerHTML = "10";
+            endTurnButton.style.display = "none";
         }
     }
+    //enemies turn, resets circle and allows enemies to move
     else{
         circleX = 400;
         circleY = 300;
         walkerDraw();
         playerDamage();
         endedTurn = false;
+
         timer++;
+        let count = 600 - timer;
+        countdown.innerHTML = Math.ceil(count/60);
+        utils.drawEnemiesLeft(ctx, walkers.length);  
         //need to make this time based instead of frames
         if (timer >= 600){
             playersTurn = true;
+            turn.innerHTML = "Players Turn";
+            time.innerHTML = ""; 
+            countdown.innerHTML = "";
+            endTurnButton.style.display = "block";
         }
-    }    
+    }   
+    
 }
 
+//draws the walkers and walls during the walkers turn
 function walkerDraw(){
     utils.drawBackground(ctx);
     player.draw(ctx);
@@ -116,15 +165,12 @@ function walkerDraw(){
     }
 
     drawWalls();
+    player.draw(ctx);
 }
 
+//translates all items in the game depending on player movement
 function translateDraw(){
-
-    ctx.save();
-	ctx.fillStyle = "black";
-	ctx.fillRect(0,0,canvasWidth,canvasHeight);
-    player.draw(ctx);
-	ctx.restore();
+    utils.drawBackground(ctx);
 
     //checks to see if a bullet has been fired
     if (bullets.length > 0){
@@ -144,37 +190,47 @@ function translateDraw(){
 
         //if they move outside the move radius stop
         //the player movement
-        // if(distanceAway >= 60){
-        //     translation[0] = 0;
-        //     translation[1] = 0;
-        // }
-        // //if collision stop the movement in the same direction
-        // else if(collision){
-        //     translation[0] *= -1;
-        //     translation[1] *= -1;
-        //     utils.clearKeys();
-        // }
+        if(distanceAway >= moveRadius){
+            translation[0] = 0;
+            translation[1] = 0;
+        }
+        //if collision stop the movement in the same direction
+        else if(collision){
+            translation[0] *= -1;
+            translation[1] *= -1;
+            utils.clearKeys();
+        }
 
-        circleX += translation[0];
-        circleY += translation[1];
+        //if there is less than 10 enemies the player is free to move
+        if (walkers.length > 10)
+        {
+            //translates the bounding circle
+            circleX += translation[0];
+            circleY += translation[1];
 
-        ctx.strokeStyle = "white";
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(circleX,circleY,60,0,Math.PI * 2, false);
-        ctx.closePath();
-        ctx.stroke();
-        ctx.restore();        
+            //draws bounding circle
+            ctx.strokeStyle = "white";
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(circleX,circleY,moveRadius,0,Math.PI * 2, false);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.restore();    
+        }
+    
     }
+    //loops through all walkers, translating them, then draws them 
     for(let i = 0; i < numWalk; i++){
         walkers[i].translatePos(translation);
         walkers[i].draw(ctx);
     }
     
+    //draws all walls
     drawWalls();
-
+    player.draw(ctx);
 }
 
+//draws all walls
 function drawWalls(){
     for(let i = 0; i < numWalls; i++){
         walls[i].translatePos(translation);
@@ -182,6 +238,7 @@ function drawWalls(){
     }
 }
 
+//checks to see where the canvas has been clicked and sends the coordinates to the bullets shoot method
 function canvasClicked(e){
     let rect = e.target.getBoundingClientRect();
     mouseX = e.clientX - rect.x;
@@ -190,7 +247,7 @@ function canvasClicked(e){
     bullets[0].shoot(mouseX, mouseY);
 }
 
-
+//does damage to the player if a walker collides with it
 function playerDamage(){
     let damage = 0;
     for(let i = 0;i < numWalk; i++){
@@ -201,7 +258,6 @@ function playerDamage(){
             numWalk--;
         }
     }
-
     player.takeDamage(damage);
 }
 
@@ -242,6 +298,59 @@ function shoot(){
         }
     }
     endedTurn = true;       
+}
+
+//used to create the game, depending on input variables and allows the user to reset if they change some variables
+function reset(){
+    timer = 610;
+    circleX = 400;
+    circleY = 300;
+
+    numWalk = enemySlider.value;
+    numWalls = wallSlider.value;
+
+    moveRadius = rangeSlider.value;
+
+    walkers = [];
+    walls = [];
+
+    //creates bounding walls
+    walls[0] = new wall.Wall(-575,-375,1950,15);
+    walls[1] = new wall.Wall(-575,-375,15,1350);
+    walls[2] = new wall.Wall(-575,975,1965,15);
+    walls[3] = new wall.Wall(1375,-375,15,1350);
+
+    
+
+    //creates random wall placements, does not allow them to be placed on top of player
+    for (let i = 4; i < numWalls; i++)
+    {
+        walls[i] = new wall.Wall(0,0,0,0);    
+        if (utils.checkCollisionWithWall(player, walls, walls.length)){
+            walls.splice(i, 1);
+            i--;
+        }
+    }    
+
+    //creates random walkers, does not allow them to be placed on top of walls or players
+    for(let i = 0;i < numWalk; i++){
+        walkers[i] = new randomWalker.RandomWalker(utils.getRandomInt(-500, 1300), utils.getRandomInt(-300, 900), 5, 5);
+        if (utils.checkCollisionWithWall(walkers[i], walls, numWalls)){
+            walkers.splice(i, 1);
+            i--;
+        }
+        if (utils.checkCollisionWithWall(player, walkers, walkers.length)){
+            walkers.splice(i, 1);
+            i--;
+        }
+    }   
+    player.health = healthSlider.value;
+    player.originalHealth = healthSlider.value;
+
+    healthLabel.innerHTML = player.originalHealth;
+    enemyLabel.innerHTML = numWalk;
+    wallLabel.innerHTML = numWalls;
+    rangeLabel.innerHTML = moveRadius;
 }
 
 

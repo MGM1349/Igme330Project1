@@ -11,7 +11,6 @@ export class Wall{
             this.x = utils.getRandomInt(-500, 1300);
             this.y = utils.getRandomInt(-300, 900);
             if(utils.getRandomInt(0,1) == 1){
-                //utils.getRandomInt(-500, 1300), utils.getRandomInt(-300, 900), utils.getRandomInt(10, 30), utils.getRandomInt(10, 30)
                 this.width = utils.getRandomInt(50,200);
                 this.height = 15;
             }
@@ -30,7 +29,7 @@ export class Wall{
 
     draw(ctx){
         ctx.save();
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "lightgray";
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.restore();
     }

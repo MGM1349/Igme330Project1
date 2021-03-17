@@ -65,7 +65,7 @@ function getRandomInt(min, max) {
 
 function drawBackground(ctx){
     ctx.save();
-	ctx.fillStyle = "black";
+	ctx.fillStyle = "#1c1c1c";
 	ctx.fillRect(0,0,800,600);
 	ctx.restore();
 }
@@ -79,4 +79,14 @@ function distanceAway(x1,y1,x2,y2){
     return distanceAway;
 }
 
-export{checkCollisionWithWall, keysDown, keysUp, playerMovement, getRandomInt, drawBackground, distanceAway, clearKeys};
+function drawEnemiesLeft(ctx, walkers){
+    ctx.save();
+    ctx.fillRect(0,0,260,40);
+    ctx.font = "30px Arial";
+    ctx.fillStyle = "white";
+    ctx.fillText(`Enemies Left: ${walkers}`, 10,30);
+    ctx.restore();   
+
+}
+
+export{checkCollisionWithWall, keysDown, keysUp, playerMovement, getRandomInt, drawBackground, distanceAway, clearKeys, drawEnemiesLeft};

@@ -1,3 +1,4 @@
+//creates a bullet object, used when player clicks canvas
 export class Bullet{
     constructor(player){  
         this.speed = 1;   
@@ -8,10 +9,12 @@ export class Bullet{
         this.rotation;
     }
 
+    //gets the angle at which the bullet travels
     shoot(mouseX, mouseY){
         this.rotation = Math.atan2(mouseY - this.y, mouseX - this.x);        
     }
 
+    //draws the bullet as it moves
     draw(ctx){
         ctx.save();        
         ctx.beginPath();

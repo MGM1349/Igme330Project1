@@ -1,34 +1,70 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Project 1</title>
 </head>
 <body>
     <script type="module" src="src/loader.js"></script>
 	<link href="styles/styles.css" type="text/css" rel="stylesheet" />
+<header>
+	<h1>Walker Blaster</h1>
+</header>
 
-<div id= "content">
-	<canvas width="800" height="600"></canvas>
-	<div id="gameInfo">
-		<h1>Game Info</h1>
-		<section>
-			Welcome to Walker Blaster. In this game you will controller the blue colored square and are
-			tasked with killing all the random walker enemies that are colored in green. There are walls all around
-			you which are colored in white. This is a turn based game where you can only move inside a predetermined 
-			area which is indicated by the white circle around you whenever it is your turn. You will move around the map
-			shooting any green enemies you see along the way. There are many walkers in your path, are you up for the challenge?
-			<div id= "controls">
-				<h2>Controls</h2>
-				<section>
-					WASD: moves the plyaer
-					Left Click: shoots the gun
-				</section>
-			</div>
-		</section>
+<main>
+	<div id= "content">
+		<div id="ingame">
+			<canvas width="800" height="600"></canvas>
+			<section id="info">				
+				<h3 id="turn">Players Turn</h3>
+				<h3 id="timer">Timer:</h3>
+				<h3 id="countdown">10</h3>				
+				<button id="endTurn">End Turn</button>				
+			</section>	
+			<section id="gameControls">
+				<h2>Input Changes</h2>
+				Player Health: <input type="range" id="healthSlider" min="1" max="10" value="5" step="1">
+				<span id="healthLabel">???</span>
+				Number of Enemies: <input type="range" id="enemySlider" min="10" max="200" value="50" step="1">
+				<span id="enemyLabel">???</span>
+				Number of Walls: <input type="range" id="wallSlider" min="10" max="100" value="50" step="1">
+				<span id="wallLabel">???</span>
+				Player Range: <input type="range" id="rangeSlider" min="10" max="250" value="50" step="1">
+				<span id="rangeLabel">???</span>
+				<button id="reset">Reset</button>
+			</section>		
+		</div>		
+		<div id="gameInfo">
+			<h1>Game Info</h1>
+			<section>
+				Welcome to Walker Blaster. In this game you will controller the blue colored square and are
+				tasked with killing all the random walker enemies that are colored in green. There are walls all around
+				you which are colored in white. This is a turn based game where you can only move inside a predetermined 
+				area which is indicated by the white circle around you whenever it is your turn. You will move around the map
+				shooting any green enemies you see along the way. There are many walkers in your path, are you up for the challenge?
+				<div id= "controls">
+					<h2>Controls</h2>
+					<p>
+						WASD: moves the plyaer<br>
+						Left Click: shoots the gun
+					</p>
+				</div>
+			</section>
+		</div>
 	</div>
-</div>
+</main>
+
+<footer>
+	<h3>IGME 330</h3>
+	<h3>Project 1</h3>
+	<h3>Zach Tatro and Marc Molnar</h3>
+	<h3><a href="about/about.html">Documentation</a></h3>
+</footer>
 
 	<div>
-		<button id="endTurn">End Turn</button>
+		
 	</div>
 </body>
 </html>
