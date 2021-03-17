@@ -40,16 +40,19 @@ let rangeLabel;
 const canvasWidth = 800, canvasHeight = 600;
 
 function init(){
+    //sets up canvas 
     canvas = document.querySelector('canvas');
     canvas.width = canvasWidth;
 	canvas.height = canvasHeight;
 	ctx = canvas.getContext("2d");
 
+    //used to get keyboard inputs
     window.addEventListener("keydown", utils.keysDown);
     window.addEventListener("keyup", utils.keysUp);
 
     canvas.onclick = canvasClicked;
     
+    //creates the player
     player = new player_class.Player(canvasWidth/2, canvasHeight/2, 3, 1, "Marc", 10, 10);
 
     //sets up all range sliders and lebels
