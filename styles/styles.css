@@ -20,15 +20,15 @@ p, ol, section{
 
 header{
     text-align: center;
-    background-color:cadetblue;
+    background-color:#9fc5c6;
     border: 10px solid black;
-    border-bottom: 10px solid cadetblue;
+    border-bottom: 10px solid #9fc5c6;
     min-width: 734px;
     font-size: 40px;
 }
 
 main{
-    background-color:cadetblue;
+    background-color:#9fc5c6;
     border: 10px solid black;
 }    
 
@@ -49,17 +49,6 @@ button{
     background-color: lightgray;
 }
 
-#Documentation{
-    font-family: "Glacial-Indifference";
-}
-
-#content{
-    font-family: "Glacial-Indifference";
-}
-
-footer{
-    font-family: "Glacial-Indifference";
-}
 
 button:hover{
     background-color: red;
@@ -101,6 +90,7 @@ button:hover{
     flex-wrap: wrap;
     justify-content: space-between;
     margin: 2vw;
+    font-family: "Glacial-Indifference";
 }
 
 #gameInfo{
@@ -116,9 +106,10 @@ button:hover{
 
 footer {
     text-align: center;
-    background-color:cadetblue;
+    background-color:#9fc5c6;
     border: 10px solid black;
-    border-top: 10px solid cadetblue;    
+    border-top: 10px solid #9fc5c6;  
+    font-family: "Glacial-Indifference";  
 }
 
 #Documentation{
@@ -127,4 +118,5 @@ footer {
     max-width: 70%;
     margin-left: auto;
     margin-right: auto;
+    font-family: "Glacial-Indifference";
 }
