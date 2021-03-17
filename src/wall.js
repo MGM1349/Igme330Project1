@@ -7,6 +7,9 @@ export class Wall{
     height = 0;
 
     constructor(x,y,width,height){
+
+        //checks to make sure nothing was inputed. If 0s are inputed
+        //then create random walls.
         if(x == 0 && y == 0 && width == 0 && height == 0){
             this.x = utils.getRandomInt(-500, 1300);
             this.y = utils.getRandomInt(-300, 900);
@@ -19,6 +22,7 @@ export class Wall{
                 this.height = utils.getRandomInt(50,200);
             }
         }
+        //otherwise set the inputed variables
         else{
             this.x = x;
             this.y = y;
@@ -27,6 +31,7 @@ export class Wall{
         }
     }
 
+    //draw the walls in a light gray color.
     draw(ctx){
         ctx.save();
         ctx.fillStyle = "lightgray";
@@ -34,6 +39,7 @@ export class Wall{
         ctx.restore();
     }
 
+    //tranlate the position of the walls when the player moves.
     translatePos(translation){
         this.x += translation[0];
         this.y += translation[1];
